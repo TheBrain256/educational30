@@ -25,29 +25,25 @@ class Figure:
         if self._is_valid_color(r, g, b):
             self.color = [self.r, self.g, self.b]
 
-    def __is_valid_sides(self, *args):
-        for new_side in self.__sides:
-            if len(self.__sides) == self.sides_count and new_side > 0 and type(new_side) == int:
-                return True
-            else:
-                return False
+    def __is_valid_sides(self, *new_sides):
+        for i in new_sides:
+            if i > 0:
+                if len(new_sides) == self.sides_count:
+                    return True
+                else:
+                    return False
 
     def get_sides(self):
         return self.__sides
 
     def __len__(self):
-        return self.new_side * self.sides_count
+        return sum(self.__sides)
 
     def set_sides(self, *new_sides):
-        sid = []
-        self.__sides = list(new_sides)
-        if self.__is_valid_sides():
-            self.get_sides()
-        else:
-            for i in range(self.sides_count):
-                sid.append(self.new_side)
-            self.__sides = sid
-            self.get_sides()
+        for j in new_sides:
+            if j != self.__is_valid_sides(j):
+                self.__sides = list(new_sides)
+                return self.__sides
 
 
 class Circle(Figure):

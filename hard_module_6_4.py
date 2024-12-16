@@ -1,3 +1,5 @@
+from math import pi, sqrt
+
 class Figure:
 
     sides_count = 0
@@ -5,9 +7,9 @@ class Figure:
     __color = []
     filled = True
 
-    def __init__(self, rgb, *new_side):
+    def __init__(self, rgb, *sides):
         self.color = list(rgb)
-        self.new_side = new_side[0]
+        self.__sides = sides
 
     def get_color(self):
         self.__color = self.color
@@ -51,13 +53,14 @@ class Circle(Figure):
     sides_count = 1
     __radius = None
 
-    def set_radius(self):
-        self.__radius = self.__len__() / (2 * 3,141569)
-        return self.__radius
+    def __init__(self, color, *sides):
+        super().__init__(color, *sides)
+        self.__sides = sides
+        self.__radius = self.__sides[0] / (2 * pi)
 
     def get_square(self):
-        self.set_radius()
-        return (self.__radius ** 2) * 3,141569
+        s = (self.__radius ** 2) * pi
+        return s
 
 
 class Triangle(Figure):
@@ -65,27 +68,30 @@ class Triangle(Figure):
     sides_count = 3
     __height = None
 
-    def get_square(self):
-        return (self.new_side ** 2) * (3 ** 0.5) / 4
+    def __init__(self, color, *sides):
+        super().__init__(color, *sides)
+        self.sides = sides
+        p = (self.sides[0] + self.sides[1] + self.sides[2]) / 2
+        self.__height = 2 * (sqrt(p * (p - self.sides[0]) * (p - self.sides[1]) *
+                                  (p - self.sides[2]))) / self.sides[0]
 
-    def set_height(self):
-        self.__height = self.new_side * (3 ** 0.5) / 2
-        return self.__height
+    def get_square(self):
+        a = (self.__height * self.sides[0]) / 2
+        return a
 
 
 class Cube(Figure):
 
     sides_count = 12
 
-    def set_side_lst(self):
-        set_side_lst = []
-        for element in range(self.sides_count):
-            set_side_lst.append(self.new_side)
-        self.__sides = set_side_lst
-        return self.__sides
+    def __init__(self, color, *sides):
+        super().__init__(color, *sides)
+        self.__sides = [sides[0]] * self.sides_count
+        print(self.__sides)
 
     def get_volume(self):
-        return self.new_side ** 3
+        b = self.__sides[0] ** 3
+        return b
 
 
 circle1 = Circle((200, 200, 100), 10)
